@@ -48,6 +48,7 @@ export class AllGames extends LitElement {
 
 		.nav-link img {
 			width: calc(80dvw - 40px);
+			max-width: 500px;
 		}
 
 		.nav-link::after {
@@ -62,8 +63,12 @@ export class AllGames extends LitElement {
 			transition: transform 0.3s ease;
 		}
 
+		.nav-link img {
+			transition: transform 0.3s ease;
+		}
+
 		.nav-link img:hover {
-			width: calc(90dvw - 40px);
+			transform: scale(1.1);
 		}
 
 		.nav-link.active::after {

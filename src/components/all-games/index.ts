@@ -1,1 +1,1 @@
-export { AllGames } from './all-games-component'
+export { AllGames } from './all-games'

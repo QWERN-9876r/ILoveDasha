@@ -101,6 +101,16 @@ export class AnswerComponent extends LitElement {
 			box-shadow: 0 6px 20px rgba(155, 79, 255, 0.5);
 		}
 
+		.answer-wrapper.correct:hover:not(.disabled) .answer-letter {
+			transform: scale(1.1) rotate(-5deg);
+			box-shadow: 0 6px 20px rgba(37, 183, 105, 0.5);
+		}
+
+		.answer-wrapper.incorrect:hover:not(.disabled) .answer-letter {
+			transform: scale(1.1) rotate(-5deg);
+			box-shadow: 0 6px 20px rgba(255, 102, 102, 0.5);
+		}
+
 		.answer-wrapper.correct .answer-letter {
 			background: linear-gradient(135deg, #25b769, #1fa057);
 			box-shadow: 0 4px 20px rgba(37, 183, 105, 0.5);
