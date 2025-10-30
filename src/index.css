@@ -381,6 +381,12 @@ html {
 	-moz-osx-font-smoothing: grayscale;
 }
 
+body {
+	background-color: var(--color-bg-elevated);
+	margin: 0;
+	padding: 0;
+}
+
 .darkBg {
 	margin: 0;
 	padding: 0;

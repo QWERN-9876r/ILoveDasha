@@ -27,6 +27,13 @@ export class AllGames extends LitElement {
 		}
 
 		.nav-list {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+
+			width: calc(100dvw - 40px);
+			height: 100%;
 			list-style: none;
 			margin: 0;
 			padding: 0;
@@ -36,7 +43,7 @@ export class AllGames extends LitElement {
 		}
 
 		.nav-item {
-			flex: 1;
+			display: block;
 		}
 
 		.nav-link img {
@@ -57,9 +64,6 @@ export class AllGames extends LitElement {
 
 		.nav-link img:hover {
 			width: calc(90dvw - 40px);
-		}
-
-		.nav-link.active {
 		}
 
 		.nav-link.active::after {
