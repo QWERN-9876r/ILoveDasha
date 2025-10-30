@@ -1,4 +1,4 @@
-import { LitElement, css, html } from 'lit'
+import { LitElement, PropertyValues, css, html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 
 import '../components/quiz'
@@ -157,10 +157,25 @@ export class QuizPage extends LitElement {
 	@state()
 	private isAccepted = false
 
+	private lastBodyOverflow = ''
+	private lastBodyBackgroundImage = ''
+
+	connectedCallback() {
+		super.connectedCallback()
+
+		this.lastBodyOverflow = document.body.style.overflow
+		this.lastBodyBackgroundImage = document.body.style.backgroundImage
+
+		document.body.style.overflow = 'hidden'
+		document.body.classList.add('darkBg')
+		document.body.style.backgroundImage = `url(${this.currentQuestion.bg})`
+	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback()
 
-		document.body.style.backgroundImage = ''
+		document.body.style.backgroundImage = this.lastBodyOverflow
+		document.body.style.overflow = this.lastBodyBackgroundImage
 		document.body.classList.remove('darkBg')
 	}
 
@@ -190,10 +205,9 @@ export class QuizPage extends LitElement {
 
 	render() {
 		const shouldShowRing = this.currentQuestionIndex === QUESTIONS.length - 1 && this.isAccepted
-		this.currentQuestion = QUESTIONS[this.currentQuestionIndex]
 
+		this.currentQuestion = QUESTIONS[this.currentQuestionIndex]
 		document.body.style.backgroundImage = `url(${this.currentQuestion.bg})`
-		document.body.classList.add('darkBg')
 
 		return html`
 			<question-component
@@ -214,32 +228,6 @@ export class QuizPage extends LitElement {
 				? html`<div class="ringWrapper">
 						<img class="ring" src="ring.png" alt="" />
 						<div class="neonBackground"></div>
-						<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-							<defs>
-								<mask id="neon-mask">
-									<rect x="0" y="0" width="100%" height="100%" fill="white" />
-									<!-- Первый путь создаёт волнистую форму в верхней части -->
-									<path
-										d="M0,50 Q50,10 100,50 T200,90 T300,50 T400,90 T500,50"
-										fill="black"
-									/>
-									<!-- Второй путь создаёт волнистую форму в нижней части -->
-									<path
-										d="M0,150 Q50,200 100,150 T200,110 T300,150 T400,110 T500,150"
-										fill="black"
-									/>
-									<!-- Дополнительные пути для создания более сложного узора -->
-									<path
-										d="M50,75 Q100,125 150,75 T250,125 T350,75 T450,125"
-										fill="black"
-									/>
-									<path
-										d="M100,100 Q150,150 200,100 T300,150 T400,100"
-										fill="black"
-									/>
-								</mask>
-							</defs>
-						</svg>
 					</div>`
 				: null}
 		`
