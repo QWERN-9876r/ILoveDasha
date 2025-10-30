@@ -1,3 +1,4 @@
+import { Router } from '@vaadin/router'
 import { LitElement, html, css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
@@ -8,6 +9,8 @@ export class NotFoundPage extends LitElement {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+
+			min-width: calc(100dvw - 40px);
 			min-height: 400px;
 		}
 
@@ -22,8 +25,7 @@ export class NotFoundPage extends LitElement {
 			border-radius: 16px;
 		}
 
-		h1 {
-			color: #bd1818;
+		.title {
 			margin: 20px 0;
 		}
 
@@ -48,12 +50,16 @@ export class NotFoundPage extends LitElement {
 		}
 	`
 
+	private handleButtonClick() {
+		Router.go('/')
+	}
+
 	render() {
 		return html`
 			<div class="content">
 				<img class="error" src="not-found-image.jpg" alt="" />
-				<h1>РЫЖИК!!!</h1>
-				<a href="/">К играм</a>
+				<app-title class="title" level="h1">РЫЖИК!!!</app-title>
+				<app-button @button-click=${this.handleButtonClick}>К играм</app-button>
 			</div>
 		`
 	}

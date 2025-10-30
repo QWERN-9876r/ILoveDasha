@@ -15,9 +15,11 @@ export class AppRoot extends LitElement {
 		}
 
 		.app-container {
+			box-sizing: border-box;
 			display: flex;
 			flex-direction: column;
 
+			margin: 0;
 			padding: 15px 20px;
 
 			min-height: 100dvh;
