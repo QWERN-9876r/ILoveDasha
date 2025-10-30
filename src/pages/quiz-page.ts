@@ -1,4 +1,4 @@
-import { LitElement, PropertyValues, css, html } from 'lit'
+import { LitElement, css, html } from 'lit'
 import { customElement, state } from 'lit/decorators.js'
 
 import '../components/quiz'
