@@ -34,7 +34,12 @@ export function preloadImagesWithProgress(
 	const total = urls.length
 
 	const promises = urls.map(url => {
+		let isLoaded = false
+
 		const onLoad = () => {
+			if (isLoaded) return
+
+			isLoaded = true
 			loadedCount++
 			const percentage = Math.round((loadedCount / total) * 100)
 			onProgress?.(loadedCount, total, percentage)
