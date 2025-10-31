@@ -7,6 +7,7 @@ import { classMap } from 'lit/directives/class-map.js'
 
 const TIME_ON_HIDE_ANIMATION = 300
 const MAX_RING_CLICKS = 10
+const RING_URL = 'ring.png'
 
 @customElement('quiz-page')
 export class QuizPage extends LitElement {
@@ -322,38 +323,40 @@ export class QuizPage extends LitElement {
 		const backgroundSize = this.getBackgroundSize()
 
 		return html`
-			<question-component
-				@answer-select=${this.handleSelectSolution}
-				.question=${this.currentQuestion}
-				scores="${this.scores}"
-				selected-answer-index="${this.selectedAnswerIndex}"
-				class=${classMap({ hide: this.isAccepted })}
-			></question-component>
-			<div>
-				${this.selectedAnswerIndex !== -1 && !shouldShowRing
-					? html`<app-button @button-click=${this.answer} animate pulse
-							>Дальше</app-button
-						>`
+			<loading-provider .images=${[...QUESTIONS.map(({ bg }) => bg), RING_URL]}>
+				<question-component
+					@answer-select=${this.handleSelectSolution}
+					.question=${this.currentQuestion}
+					scores="${this.scores}"
+					selected-answer-index="${this.selectedAnswerIndex}"
+					class=${classMap({ hide: this.isAccepted })}
+				></question-component>
+				<div>
+					${this.selectedAnswerIndex !== -1 && !shouldShowRing
+						? html`<app-button @button-click=${this.answer} animate pulse
+								>Дальше</app-button
+							>`
+						: null}
+				</div>
+				${shouldShowRing
+					? html`<div class="ringWrapper">
+							<img
+								class="ring ${classMap({
+									show: this.ringShown,
+									flyaway: this.ringFlyingAway,
+								})}"
+								src="ring.png"
+								alt="Кольцо"
+								@click=${this.handleRingClick}
+								style="--ring-scale: ${ringScale};"
+							/>
+							<div
+								class="neonBackground ${classMap({ visible: shouldShowRing })}"
+								style="--bg-size: ${backgroundSize}px; background: ${backgroundColor};"
+							></div>
+						</div>`
 					: null}
-			</div>
-			${shouldShowRing
-				? html`<div class="ringWrapper">
-						<img
-							class="ring ${classMap({
-								show: this.ringShown,
-								flyaway: this.ringFlyingAway,
-							})}"
-							src="ring.png"
-							alt="Кольцо"
-							@click=${this.handleRingClick}
-							style="--ring-scale: ${ringScale};"
-						/>
-						<div
-							class="neonBackground ${classMap({ visible: shouldShowRing })}"
-							style="--bg-size: ${backgroundSize}px; background: ${backgroundColor};"
-						></div>
-					</div>`
-				: null}
+			</loading-provider>
 		`
 	}
 }
