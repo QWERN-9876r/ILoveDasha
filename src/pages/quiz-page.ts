@@ -241,7 +241,7 @@ export class QuizPage extends LitElement {
 	`
 
 	@state()
-	private currentQuestionIndex = 4
+	private currentQuestionIndex = 0
 
 	@state()
 	private scores = 0
