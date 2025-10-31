@@ -6,7 +6,9 @@ import '../components/all-games'
 @customElement('home-page')
 export class HomePage extends LitElement {
 	render() {
-		return html`<all-games></all-games>`
+		return html`<app-title level="h1" align="center"
+				>Это сайт о том как я тебя люблю ♥️</app-title
+			><all-games></all-games>`
 	}
 }
 
