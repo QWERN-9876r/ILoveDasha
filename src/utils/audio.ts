@@ -1,10 +1,14 @@
 // src/utils/sound-manager.ts
 
+import { wait } from './wait'
+
 export interface SoundOptions {
 	volume?: number
 	loop?: boolean
 	playbackRate?: number
 }
+
+const TIMEOUT = 3000
 
 export class SoundManager {
 	private sounds: Map<string, HTMLAudioElement> = new Map()
@@ -16,21 +20,24 @@ export class SoundManager {
 	 */
 	preload(sounds: Record<string, string>) {
 		const promises = Object.entries(sounds).map(([key, src]) => {
-			return new Promise<void>((resolve, reject) => {
-				const audio = new Audio()
-				audio.preload = 'auto'
+			return Promise.race([
+				new Promise<void>((resolve, reject) => {
+					const audio = new Audio()
+					audio.preload = 'auto'
 
-				audio.oncanplaythrough = () => {
-					this.sounds.set(key, audio)
-					resolve()
-				}
+					audio.oncanplaythrough = () => {
+						this.sounds.set(key, audio)
+						resolve()
+					}
 
-				audio.onerror = () => {
-					reject(new Error(`Failed to load sound: ${src}`))
-				}
+					audio.onerror = () => {
+						reject(new Error(`Failed to load sound: ${src}`))
+					}
 
-				audio.src = src
-			})
+					audio.src = src
+				}),
+				wait(TIMEOUT),
+			])
 		})
 
 		return promises
