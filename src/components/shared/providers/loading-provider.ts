@@ -132,6 +132,12 @@ export class LoadingProvider extends LitElement {
 	images: string[] = []
 
 	/**
+	 * Массив промисов загрузки
+	 */
+	@property({ type: Array, attribute: false })
+	promises: Promise<void>[] = []
+
+	/**
 	 * Заголовок экрана загрузки
 	 */
 	@property({ type: String })
@@ -197,35 +203,46 @@ export class LoadingProvider extends LitElement {
 	async connectedCallback() {
 		super.connectedCallback()
 		this.startTime = Date.now()
+		this.total = this.images.length + this.promises.length
 
-		if (this.images.length > 0) {
-			await this.loadAllImages()
-		} else {
-			// Если нет изображений для загрузки, сразу показываем контент
-			this.completeLoading()
-		}
+		await this.loadAll()
+
+		await this.completeLoading()
+	}
+
+	private async loadAll() {
+		return Promise.all([
+			this.loadAllImages(),
+			...this.promises.map(promise =>
+				promise.then(res => {
+					this.loaded++
+					this.progress = Math.round((this.loaded / this.total) * 100)
+
+					return res
+				})
+			),
+		])
 	}
 
 	private async loadAllImages() {
-		this.total = this.images.length
-
 		try {
-			await preloadImagesWithProgress(this.images, (loaded, total, percentage) => {
-				this.loaded = loaded
-				this.total = total
-				this.progress = percentage
+			await preloadImagesWithProgress(this.images, () => {
+				this.loaded++
+				this.progress = Math.round((this.loaded / this.total) * 100)
 
 				// Отправляем событие прогресса
 				this.dispatchEvent(
 					new CustomEvent('loading-progress', {
 						bubbles: true,
 						composed: true,
-						detail: { loaded, total, percentage },
+						detail: {
+							loaded: this.loaded,
+							total: this.total,
+							percentage: this.progress,
+						},
 					})
 				)
 			})
-
-			await this.completeLoading()
 		} catch (error) {
 			this.handleError(error as Error)
 		}

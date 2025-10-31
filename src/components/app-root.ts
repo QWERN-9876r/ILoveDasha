@@ -3,7 +3,8 @@ import { customElement, state } from 'lit/decorators.js'
 import { Router } from '@vaadin/router'
 
 import '../pages'
-import { PRELOAD_IMAGES } from '../utils/constants'
+import { PRELOAD_AUDIO, PRELOAD_IMAGES } from '../utils/constants'
+import { soundManager } from '../utils/audio'
 
 export type NavLink = '/' | '/quiz'
 
@@ -59,7 +60,6 @@ export class AppRoot extends LitElement {
 			])
 		}
 
-		// Слушаем события навигации от nav-bar
 		this.addEventListener('navigate', ((e: CustomEvent) => {
 			Router.go(e.detail.path)
 		}) as EventListener)
@@ -67,7 +67,9 @@ export class AppRoot extends LitElement {
 
 	render() {
 		return html`
-			<loading-provider .images=${PRELOAD_IMAGES}
+			<loading-provider
+				.promises=${soundManager.preload(PRELOAD_AUDIO)}
+				.images=${PRELOAD_IMAGES}
 				><div class="app-container">
 					<main id="outlet"></main></div
 			></loading-provider>

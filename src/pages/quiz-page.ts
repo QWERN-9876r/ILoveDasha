@@ -4,6 +4,7 @@ import { customElement, state } from 'lit/decorators.js'
 import '../components/quiz'
 import { QUESTIONS } from '../components/quiz'
 import { classMap } from 'lit/directives/class-map.js'
+import { soundManager } from '../utils/audio'
 
 const TIME_ON_HIDE_ANIMATION = 300
 const MAX_RING_CLICKS = 10
@@ -57,6 +58,54 @@ export class QuizPage extends LitElement {
 
 		question-component.hide {
 			animation: close ${TIME_ON_HIDE_ANIMATION}ms forwards;
+		}
+
+		.exitButtonWrapper {
+			position: fixed;
+			inset: 0;
+			width: 100%;
+			z-index: 10000;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.exitButton {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+		}
+
+		@keyframes heartPulse {
+			0% {
+				transform: scale(1);
+			}
+
+			20% {
+				transform: scale(1);
+			}
+
+			50% {
+				transform: scale(1.1);
+			}
+
+			70% {
+				transform: scale(1.1);
+			}
+
+			100% {
+				transform: scale(1);
+			}
+		}
+
+		.exitButton icon-heart {
+			display: block;
+			color: var(--color-secondary-500);
+			width: calc(100dvw - 40px);
+
+			animation: heartPulse 1s infinite ease-in-out;
 		}
 
 		.ringWrapper {
@@ -192,7 +241,7 @@ export class QuizPage extends LitElement {
 	`
 
 	@state()
-	private currentQuestionIndex = 0
+	private currentQuestionIndex = 4
 
 	@state()
 	private scores = 0
@@ -211,6 +260,9 @@ export class QuizPage extends LitElement {
 
 	@state()
 	private ringShown = false
+
+	@state()
+	private shouldShowExitButton = false
 
 	private lastBodyOverflow = ''
 	private lastBodyBackgroundImage = ''
@@ -232,6 +284,8 @@ export class QuizPage extends LitElement {
 		document.body.style.backgroundImage = this.lastBodyOverflow
 		document.body.style.overflow = this.lastBodyBackgroundImage
 		document.body.classList.remove('darkBg')
+
+		soundManager.stopAll()
 	}
 
 	private currentQuestion = QUESTIONS[this.currentQuestionIndex]
@@ -277,6 +331,11 @@ export class QuizPage extends LitElement {
 				this.dispatchEvent(
 					new CustomEvent('ring-complete', { bubbles: true, composed: true })
 				)
+
+				this.shouldShowExitButton = true
+				soundManager.play('heart', {
+					loop: true,
+				})
 			}, 2000)
 		}
 	}
@@ -336,8 +395,16 @@ export class QuizPage extends LitElement {
 						>`
 					: null}
 			</div>
+
+			${this.shouldShowExitButton
+				? html`<div class="exitButtonWrapper">
+						<div class="exitButton">
+							<app-link href="/"> <icon-heart filled></icon-heart></app-link>
+						</div>
+					</div>`
+				: null}
 			${shouldShowRing
-				? html`<div class="ringWrapper">
+				? html` <div class="ringWrapper">
 						<img
 							class="ring ${classMap({
 								show: this.ringShown,
