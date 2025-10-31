@@ -8,6 +8,7 @@ export default defineConfig({
 	},
 	preview: {
 		host: '0.0.0.0',
+		allowedHosts: ['dimalovedasha.ru'],
 		port: 80,
 	},
 	plugins: [
