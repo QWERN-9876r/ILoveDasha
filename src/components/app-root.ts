@@ -3,6 +3,7 @@ import { customElement, state } from 'lit/decorators.js'
 import { Router } from '@vaadin/router'
 
 import '../pages'
+import { PRELOAD_IMAGES } from '../utils/constants'
 
 export type NavLink = '/' | '/quiz'
 
@@ -66,9 +67,10 @@ export class AppRoot extends LitElement {
 
 	render() {
 		return html`
-			<div class="app-container">
-				<main id="outlet"></main>
-			</div>
+			<loading-provider .images=${PRELOAD_IMAGES}
+				><div class="app-container">
+					<main id="outlet"></main></div
+			></loading-provider>
 		`
 	}
 }
