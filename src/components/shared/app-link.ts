@@ -54,8 +54,6 @@ export class AppLink extends LitElement {
 			e.preventDefault()
 			e.stopPropagation()
 
-			console.log('Navigating to:', this.href)
-
 			Router.go(this.href)
 
 			this.dispatchEvent(

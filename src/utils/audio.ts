@@ -34,6 +34,8 @@ export class SoundManager {
 						reject(new Error(`Failed to load sound: ${src}`))
 					}
 
+					document.body.appendChild(audio)
+
 					audio.src = src
 				}),
 				wait(TIMEOUT),
@@ -76,6 +78,8 @@ export class SoundManager {
 		for (const sound of this.sounds.values()) {
 			sound.currentTime = 0
 			sound.pause()
+
+			document.body.removeChild(sound)
 		}
 	}
 
