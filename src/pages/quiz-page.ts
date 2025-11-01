@@ -50,6 +50,7 @@ export class QuizPage extends LitElement {
 
 			display: block;
 			width: calc(100dvw - 40px);
+			max-width: calc(var(--max-layout-width) - 40px);
 		}
 
 		question-component {
@@ -104,6 +105,7 @@ export class QuizPage extends LitElement {
 			display: block;
 			color: var(--color-secondary-500);
 			width: calc(100dvw - 40px);
+			max-width: calc(var(--max-layout-width) - 40px);
 
 			animation: heartPulse 1s infinite ease-in-out;
 		}

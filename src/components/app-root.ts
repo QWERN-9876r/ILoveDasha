@@ -20,11 +20,14 @@ export class AppRoot extends LitElement {
 			box-sizing: border-box;
 			display: flex;
 			flex-direction: column;
+			justify-content: center;
+			align-items: center;
 
 			margin: 0;
 			padding: 15px 20px;
 
 			min-height: 100dvh;
+			width: 100dvw;
 		}
 
 		header {
@@ -37,6 +40,7 @@ export class AppRoot extends LitElement {
 
 		main {
 			flex: 1;
+			max-width: var(--max-layout-width);
 		}
 
 		footer {

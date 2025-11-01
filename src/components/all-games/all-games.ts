@@ -33,6 +33,7 @@ export class AllGames extends LitElement {
 			justify-content: center;
 
 			width: calc(100dvw - 40px);
+			max-width: calc(var(--max-layout-width) - 40px);
 			height: 100%;
 			list-style: none;
 			margin: 0;

@@ -10,7 +10,8 @@ export class NotFoundPage extends LitElement {
 			align-items: center;
 			justify-content: center;
 
-			min-width: calc(100dvw - 40px);
+			width: calc(100dvw - 40px);
+			max-width: calc(var(--max-layout-width) - 40px);
 			min-height: 400px;
 		}
 
@@ -22,6 +23,8 @@ export class NotFoundPage extends LitElement {
 			display: block;
 
 			width: calc(80dvw - 40px);
+			max-width: calc(var(--max-layout-width) - 40px);
+
 			border-radius: 16px;
 		}
 

@@ -5,7 +5,8 @@ export const styles = css`
 		display: block;
 		width: 100%;
 
-		min-width: calc(100dvw - 40px);
+		width: calc(100dvw - 40px);
+		max-width: calc(var(--max-layout-width) - 40px);
 	}
 
 	.answer-wrapper {
